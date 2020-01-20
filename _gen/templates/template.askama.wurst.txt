@@ -1,0 +1,39 @@
+
+package WurstMaybePrimitives
+
+/**
+    WARNING: This file is rendered by a template - do not edit it manually!
+*/
+
+class JustNull
+    private construct()
+
+{% for _type in type_and_defaults %}
+public interface Maybe{{ "{}"|format(_type._type|capitalize) }}Map
+    function map({{ _type._type }} lhs) returns {{ _type._type }}
+
+public tuple maybe_{{ _type._type }}(bool _has, {{ _type._type }} val)
+
+public function maybe_{{ _type._type }}.get_or({{ _type._type }} default_val) returns {{ _type._type }}
+    if this._has
+        return this.val
+    return default_val
+
+public function maybe_{{ _type._type }}.has() returns bool
+    return this._has
+
+public function maybe_{{ _type._type }}.unwrap() returns {{ _type._type }}
+    return this.val
+
+public function maybe_{{ _type._type }}.map(Maybe{{ "{}"|format(_type._type|capitalize) }}Map cl) returns maybe_{{ _type._type }}
+    let ret = this._has ? cl.map(this.val) : this.val
+    destroy cl
+    return maybe_{{ _type._type }}(this._has, ret)
+
+public function maybe_{{ _type._type }}({{ _type._type }} val) returns maybe_{{ _type._type }}
+    return maybe_{{ _type._type }}(true, val)
+
+public function maybe_{{ _type._type }}(JustNull _zst) returns maybe_{{ _type._type }}
+    return maybe_{{ _type._type }}(false, {{ _type.default }})
+
+{% endfor %}

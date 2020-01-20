@@ -1,0 +1,262 @@
+
+package WurstMaybePrimitives
+
+/**
+    WARNING: This file is rendered by a template - do not edit it manually!
+*/
+
+class JustNull
+    private construct()
+
+
+public interface MaybeIntMap
+    function map(int lhs) returns int
+
+public tuple maybe_int(bool _has, int val)
+
+public function maybe_int.get_or(int default_val) returns int
+    if this._has
+        return this.val
+    return default_val
+
+public function maybe_int.has() returns bool
+    return this._has
+
+public function maybe_int.unwrap() returns int
+    return this.val
+
+public function maybe_int.map(MaybeIntMap cl) returns maybe_int
+    let ret = this._has ? cl.map(this.val) : this.val
+    destroy cl
+    return maybe_int(this._has, ret)
+
+public function maybe_int(int val) returns maybe_int
+    return maybe_int(true, val)
+
+public function maybe_int(JustNull _zst) returns maybe_int
+    return maybe_int(false, 0)
+
+
+public interface MaybeRealMap
+    function map(real lhs) returns real
+
+public tuple maybe_real(bool _has, real val)
+
+public function maybe_real.get_or(real default_val) returns real
+    if this._has
+        return this.val
+    return default_val
+
+public function maybe_real.has() returns bool
+    return this._has
+
+public function maybe_real.unwrap() returns real
+    return this.val
+
+public function maybe_real.map(MaybeRealMap cl) returns maybe_real
+    let ret = this._has ? cl.map(this.val) : this.val
+    destroy cl
+    return maybe_real(this._has, ret)
+
+public function maybe_real(real val) returns maybe_real
+    return maybe_real(true, val)
+
+public function maybe_real(JustNull _zst) returns maybe_real
+    return maybe_real(false, 0.)
+
+
+public interface MaybeBoolMap
+    function map(bool lhs) returns bool
+
+public tuple maybe_bool(bool _has, bool val)
+
+public function maybe_bool.get_or(bool default_val) returns bool
+    if this._has
+        return this.val
+    return default_val
+
+public function maybe_bool.has() returns bool
+    return this._has
+
+public function maybe_bool.unwrap() returns bool
+    return this.val
+
+public function maybe_bool.map(MaybeBoolMap cl) returns maybe_bool
+    let ret = this._has ? cl.map(this.val) : this.val
+    destroy cl
+    return maybe_bool(this._has, ret)
+
+public function maybe_bool(bool val) returns maybe_bool
+    return maybe_bool(true, val)
+
+public function maybe_bool(JustNull _zst) returns maybe_bool
+    return maybe_bool(false, false)
+
+
+public interface MaybeStringMap
+    function map(string lhs) returns string
+
+public tuple maybe_string(bool _has, string val)
+
+public function maybe_string.get_or(string default_val) returns string
+    if this._has
+        return this.val
+    return default_val
+
+public function maybe_string.has() returns bool
+    return this._has
+
+public function maybe_string.unwrap() returns string
+    return this.val
+
+public function maybe_string.map(MaybeStringMap cl) returns maybe_string
+    let ret = this._has ? cl.map(this.val) : this.val
+    destroy cl
+    return maybe_string(this._has, ret)
+
+public function maybe_string(string val) returns maybe_string
+    return maybe_string(true, val)
+
+public function maybe_string(JustNull _zst) returns maybe_string
+    return maybe_string(false, "")
+
+
+public interface MaybeUnitMap
+    function map(unit lhs) returns unit
+
+public tuple maybe_unit(bool _has, unit val)
+
+public function maybe_unit.get_or(unit default_val) returns unit
+    if this._has
+        return this.val
+    return default_val
+
+public function maybe_unit.has() returns bool
+    return this._has
+
+public function maybe_unit.unwrap() returns unit
+    return this.val
+
+public function maybe_unit.map(MaybeUnitMap cl) returns maybe_unit
+    let ret = this._has ? cl.map(this.val) : this.val
+    destroy cl
+    return maybe_unit(this._has, ret)
+
+public function maybe_unit(unit val) returns maybe_unit
+    return maybe_unit(true, val)
+
+public function maybe_unit(JustNull _zst) returns maybe_unit
+    return maybe_unit(false, null)
+
+
+public interface MaybePlayerMap
+    function map(player lhs) returns player
+
+public tuple maybe_player(bool _has, player val)
+
+public function maybe_player.get_or(player default_val) returns player
+    if this._has
+        return this.val
+    return default_val
+
+public function maybe_player.has() returns bool
+    return this._has
+
+public function maybe_player.unwrap() returns player
+    return this.val
+
+public function maybe_player.map(MaybePlayerMap cl) returns maybe_player
+    let ret = this._has ? cl.map(this.val) : this.val
+    destroy cl
+    return maybe_player(this._has, ret)
+
+public function maybe_player(player val) returns maybe_player
+    return maybe_player(true, val)
+
+public function maybe_player(JustNull _zst) returns maybe_player
+    return maybe_player(false, null)
+
+
+public interface MaybeVec2Map
+    function map(vec2 lhs) returns vec2
+
+public tuple maybe_vec2(bool _has, vec2 val)
+
+public function maybe_vec2.get_or(vec2 default_val) returns vec2
+    if this._has
+        return this.val
+    return default_val
+
+public function maybe_vec2.has() returns bool
+    return this._has
+
+public function maybe_vec2.unwrap() returns vec2
+    return this.val
+
+public function maybe_vec2.map(MaybeVec2Map cl) returns maybe_vec2
+    let ret = this._has ? cl.map(this.val) : this.val
+    destroy cl
+    return maybe_vec2(this._has, ret)
+
+public function maybe_vec2(vec2 val) returns maybe_vec2
+    return maybe_vec2(true, val)
+
+public function maybe_vec2(JustNull _zst) returns maybe_vec2
+    return maybe_vec2(false, ZERO2)
+
+
+public interface MaybeVec3Map
+    function map(vec3 lhs) returns vec3
+
+public tuple maybe_vec3(bool _has, vec3 val)
+
+public function maybe_vec3.get_or(vec3 default_val) returns vec3
+    if this._has
+        return this.val
+    return default_val
+
+public function maybe_vec3.has() returns bool
+    return this._has
+
+public function maybe_vec3.unwrap() returns vec3
+    return this.val
+
+public function maybe_vec3.map(MaybeVec3Map cl) returns maybe_vec3
+    let ret = this._has ? cl.map(this.val) : this.val
+    destroy cl
+    return maybe_vec3(this._has, ret)
+
+public function maybe_vec3(vec3 val) returns maybe_vec3
+    return maybe_vec3(true, val)
+
+public function maybe_vec3(JustNull _zst) returns maybe_vec3
+    return maybe_vec3(false, ZERO3)
+
+
+public interface MaybeAngleMap
+    function map(angle lhs) returns angle
+
+public tuple maybe_angle(bool _has, angle val)
+
+public function maybe_angle.get_or(angle default_val) returns angle
+    if this._has
+        return this.val
+    return default_val
+
+public function maybe_angle.has() returns bool
+    return this._has
+
+public function maybe_angle.unwrap() returns angle
+    return this.val
+
+public function maybe_angle.map(MaybeAngleMap cl) returns maybe_angle
+    let ret = this._has ? cl.map(this.val) : this.val
+    destroy cl
+    return maybe_angle(this._has, ret)
+
+public function maybe_angle(angle val) returns maybe_angle
+    return maybe_angle(true, val)
+
+public function maybe_angle(JustNull _zst) returns maybe_angle
+    return maybe_angle(false, angle(0.))
+

@@ -1,0 +1,9 @@
+[package]
+name = "_gen"
+version = "0.1.0"
+authors = ["Cokemonkey11"]
+edition = "2018"
+
+[dependencies]
+askama = "0.9.0"
+askama-filters = "0.1.2"
