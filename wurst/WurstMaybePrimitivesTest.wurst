@@ -1,0 +1,45 @@
+package WurstMaybePrimitivesTest
+
+import WurstMaybePrimitives
+
+@test function testGetOr()
+    maybe_int(5).get_or(6).assertEquals(5)
+    maybe_int(null).get_or(42).assertEquals(42)
+    maybe_int(true, 1).get_or(-1).assertEquals(1)
+    maybe_int(true, 0).get_or(5).assertEquals(0)
+
+@test function testHas()
+    maybe_real(3).has().assertTrue()
+    maybe_real(false, 99.1).has().assertFalse()
+    maybe_real(null).has().assertFalse()
+
+@test function testUnwrap()
+    maybe_bool(false).unwrap().assertFalse()
+    maybe_bool(true, false).unwrap().assertFalse()
+
+@test function testMap()
+    maybe_string("hello").map(s -> s + " world").unwrap().assertEquals("hello world")
+
+    maybe_vec2(null).map() q ->
+        true.assertFalse()
+        return false
+
+    maybe_bool(false).map(b -> b ? 35.0 : 99.0).unwrap().assertEquals(99.0)
+
+@test function testFlatMap()
+    maybe_bool(true).flat_map(b -> b ? maybe_string("a") : maybe_string("aaaaa")).unwrap().assertEquals("a")
+
+    let z = 2.
+    maybe_vec2(vec2(7., 9.))
+        .flat_map(v -> v.length() > 1. ? maybe_vec3(v.withZ(z)) : maybe_vec3(null))
+        .unwrap()
+        .assertEquals(vec3(7., 9., 2.))
+
+@test function testGetOrElse()
+    maybe_bool(null).get_or_else(() -> begin
+        true.assertTrue()
+
+        return false
+    end).assertFalse()
+
+    maybe_vec3(null).get_or_else(() -> vec3(1., 2., 3.)).x.assertEquals(1.)

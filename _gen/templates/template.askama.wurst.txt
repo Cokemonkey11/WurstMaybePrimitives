@@ -9,9 +9,6 @@ class JustNull
     private construct()
 
 {% for _type in type_and_defaults %}
-public interface Maybe{{ "{}"|format(_type._type|capitalize) }}Map
-    function map({{ _type._type }} lhs) returns {{ _type._type }}
-
 public tuple maybe_{{ _type._type }}(bool _has, {{ _type._type }} val)
 
 public function maybe_{{ _type._type }}.get_or({{ _type._type }} default_val) returns {{ _type._type }}
@@ -19,21 +16,49 @@ public function maybe_{{ _type._type }}.get_or({{ _type._type }} default_val) re
         return this.val
     return default_val
 
+public interface {{ "{}"|format(_type._type|capitalize) }}Supplier
+    function get() returns {{ _type._type }}
+
+public function maybe_{{ _type._type }}.get_or_else({{ "{}"|format(_type._type|capitalize) }}Supplier cl) returns {{ _type._type }}
+    let ret = this._has ? this.val : cl.get()
+    destroy cl
+    return ret
+
 public function maybe_{{ _type._type }}.has() returns bool
     return this._has
 
 public function maybe_{{ _type._type }}.unwrap() returns {{ _type._type }}
     return this.val
 
-public function maybe_{{ _type._type }}.map(Maybe{{ "{}"|format(_type._type|capitalize) }}Map cl) returns maybe_{{ _type._type }}
-    let ret = this._has ? cl.map(this.val) : this.val
+{% for _type2 in type_and_defaults %}
+public interface Maybe{{ "{}"|format(_type._type|capitalize) }}Map{{ "{}"|format(_type2._type|capitalize) }}
+    function map({{ _type._type }} lhs) returns {{ _type2._type }}
+
+public function maybe_{{ _type._type }}.map(Maybe{{ "{}"|format(_type._type|capitalize) }}Map{{ "{}"|format(_type2._type|capitalize) }} cl) returns maybe_{{ _type2._type }}
+    let ret = this._has ? cl.map(this.val) : {{ _type2.default }}
     destroy cl
-    return maybe_{{ _type._type }}(this._has, ret)
+    return maybe_{{ _type2._type }}(this._has, ret)
+
+public interface Maybe{{ "{}"|format(_type._type|capitalize) }}FlatMap{{ "{}"|format(_type2._type|capitalize) }}
+    function flat_map({{ _type._type }} lhs) returns maybe_{{ _type2._type }}
+
+public function maybe_{{ _type._type }}.flat_map(Maybe{{ "{}"|format(_type._type|capitalize) }}FlatMap{{ "{}"|format(_type2._type|capitalize) }} cl) returns maybe_{{ _type2._type }}
+    let ret = this._has ? cl.flat_map(this.val) : maybe_{{ _type2._type }}(false, {{ _type2.default }})
+    destroy cl
+    return ret
+{% endfor %}
+
+{% if _type.default == "null" %}
+public function maybe_{{ _type._type }}({{ _type._type }} val) returns maybe_{{ _type._type }}
+    return maybe_{{ _type._type }}(val == null ? false : true, val)
+
+{% else %}
 
 public function maybe_{{ _type._type }}({{ _type._type }} val) returns maybe_{{ _type._type }}
     return maybe_{{ _type._type }}(true, val)
 
 public function maybe_{{ _type._type }}(JustNull _zst) returns maybe_{{ _type._type }}
     return maybe_{{ _type._type }}(false, {{ _type.default }})
+{% endif %}
 
 {% endfor %}

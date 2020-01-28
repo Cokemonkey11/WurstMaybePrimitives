@@ -9,9 +9,6 @@ class JustNull
     private construct()
 
 
-public interface MaybeIntMap
-    function map(int lhs) returns int
-
 public tuple maybe_int(bool _has, int val)
 
 public function maybe_int.get_or(int default_val) returns int
@@ -19,16 +16,169 @@ public function maybe_int.get_or(int default_val) returns int
         return this.val
     return default_val
 
+public interface IntSupplier
+    function get() returns int
+
+public function maybe_int.get_or_else(IntSupplier cl) returns int
+    let ret = this._has ? this.val : cl.get()
+    destroy cl
+    return ret
+
 public function maybe_int.has() returns bool
     return this._has
 
 public function maybe_int.unwrap() returns int
     return this.val
 
-public function maybe_int.map(MaybeIntMap cl) returns maybe_int
-    let ret = this._has ? cl.map(this.val) : this.val
+
+public interface MaybeIntMapInt
+    function map(int lhs) returns int
+
+public function maybe_int.map(MaybeIntMapInt cl) returns maybe_int
+    let ret = this._has ? cl.map(this.val) : 0
     destroy cl
     return maybe_int(this._has, ret)
+
+public interface MaybeIntFlatMapInt
+    function flat_map(int lhs) returns maybe_int
+
+public function maybe_int.flat_map(MaybeIntFlatMapInt cl) returns maybe_int
+    let ret = this._has ? cl.flat_map(this.val) : maybe_int(false, 0)
+    destroy cl
+    return ret
+
+public interface MaybeIntMapReal
+    function map(int lhs) returns real
+
+public function maybe_int.map(MaybeIntMapReal cl) returns maybe_real
+    let ret = this._has ? cl.map(this.val) : 0.
+    destroy cl
+    return maybe_real(this._has, ret)
+
+public interface MaybeIntFlatMapReal
+    function flat_map(int lhs) returns maybe_real
+
+public function maybe_int.flat_map(MaybeIntFlatMapReal cl) returns maybe_real
+    let ret = this._has ? cl.flat_map(this.val) : maybe_real(false, 0.)
+    destroy cl
+    return ret
+
+public interface MaybeIntMapBool
+    function map(int lhs) returns bool
+
+public function maybe_int.map(MaybeIntMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.map(this.val) : false
+    destroy cl
+    return maybe_bool(this._has, ret)
+
+public interface MaybeIntFlatMapBool
+    function flat_map(int lhs) returns maybe_bool
+
+public function maybe_int.flat_map(MaybeIntFlatMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.flat_map(this.val) : maybe_bool(false, false)
+    destroy cl
+    return ret
+
+public interface MaybeIntMapString
+    function map(int lhs) returns string
+
+public function maybe_int.map(MaybeIntMapString cl) returns maybe_string
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_string(this._has, ret)
+
+public interface MaybeIntFlatMapString
+    function flat_map(int lhs) returns maybe_string
+
+public function maybe_int.flat_map(MaybeIntFlatMapString cl) returns maybe_string
+    let ret = this._has ? cl.flat_map(this.val) : maybe_string(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeIntMapUnit
+    function map(int lhs) returns unit
+
+public function maybe_int.map(MaybeIntMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_unit(this._has, ret)
+
+public interface MaybeIntFlatMapUnit
+    function flat_map(int lhs) returns maybe_unit
+
+public function maybe_int.flat_map(MaybeIntFlatMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.flat_map(this.val) : maybe_unit(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeIntMapPlayer
+    function map(int lhs) returns player
+
+public function maybe_int.map(MaybeIntMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_player(this._has, ret)
+
+public interface MaybeIntFlatMapPlayer
+    function flat_map(int lhs) returns maybe_player
+
+public function maybe_int.flat_map(MaybeIntFlatMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.flat_map(this.val) : maybe_player(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeIntMapVec2
+    function map(int lhs) returns vec2
+
+public function maybe_int.map(MaybeIntMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.map(this.val) : ZERO2
+    destroy cl
+    return maybe_vec2(this._has, ret)
+
+public interface MaybeIntFlatMapVec2
+    function flat_map(int lhs) returns maybe_vec2
+
+public function maybe_int.flat_map(MaybeIntFlatMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec2(false, ZERO2)
+    destroy cl
+    return ret
+
+public interface MaybeIntMapVec3
+    function map(int lhs) returns vec3
+
+public function maybe_int.map(MaybeIntMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.map(this.val) : ZERO3
+    destroy cl
+    return maybe_vec3(this._has, ret)
+
+public interface MaybeIntFlatMapVec3
+    function flat_map(int lhs) returns maybe_vec3
+
+public function maybe_int.flat_map(MaybeIntFlatMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec3(false, ZERO3)
+    destroy cl
+    return ret
+
+public interface MaybeIntMapAngle
+    function map(int lhs) returns angle
+
+public function maybe_int.map(MaybeIntMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.map(this.val) : angle(0.)
+    destroy cl
+    return maybe_angle(this._has, ret)
+
+public interface MaybeIntFlatMapAngle
+    function flat_map(int lhs) returns maybe_angle
+
+public function maybe_int.flat_map(MaybeIntFlatMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.flat_map(this.val) : maybe_angle(false, angle(0.))
+    destroy cl
+    return ret
+
+
+
+
+
 
 public function maybe_int(int val) returns maybe_int
     return maybe_int(true, val)
@@ -37,8 +187,6 @@ public function maybe_int(JustNull _zst) returns maybe_int
     return maybe_int(false, 0)
 
 
-public interface MaybeRealMap
-    function map(real lhs) returns real
 
 public tuple maybe_real(bool _has, real val)
 
@@ -47,16 +195,169 @@ public function maybe_real.get_or(real default_val) returns real
         return this.val
     return default_val
 
+public interface RealSupplier
+    function get() returns real
+
+public function maybe_real.get_or_else(RealSupplier cl) returns real
+    let ret = this._has ? this.val : cl.get()
+    destroy cl
+    return ret
+
 public function maybe_real.has() returns bool
     return this._has
 
 public function maybe_real.unwrap() returns real
     return this.val
 
-public function maybe_real.map(MaybeRealMap cl) returns maybe_real
-    let ret = this._has ? cl.map(this.val) : this.val
+
+public interface MaybeRealMapInt
+    function map(real lhs) returns int
+
+public function maybe_real.map(MaybeRealMapInt cl) returns maybe_int
+    let ret = this._has ? cl.map(this.val) : 0
+    destroy cl
+    return maybe_int(this._has, ret)
+
+public interface MaybeRealFlatMapInt
+    function flat_map(real lhs) returns maybe_int
+
+public function maybe_real.flat_map(MaybeRealFlatMapInt cl) returns maybe_int
+    let ret = this._has ? cl.flat_map(this.val) : maybe_int(false, 0)
+    destroy cl
+    return ret
+
+public interface MaybeRealMapReal
+    function map(real lhs) returns real
+
+public function maybe_real.map(MaybeRealMapReal cl) returns maybe_real
+    let ret = this._has ? cl.map(this.val) : 0.
     destroy cl
     return maybe_real(this._has, ret)
+
+public interface MaybeRealFlatMapReal
+    function flat_map(real lhs) returns maybe_real
+
+public function maybe_real.flat_map(MaybeRealFlatMapReal cl) returns maybe_real
+    let ret = this._has ? cl.flat_map(this.val) : maybe_real(false, 0.)
+    destroy cl
+    return ret
+
+public interface MaybeRealMapBool
+    function map(real lhs) returns bool
+
+public function maybe_real.map(MaybeRealMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.map(this.val) : false
+    destroy cl
+    return maybe_bool(this._has, ret)
+
+public interface MaybeRealFlatMapBool
+    function flat_map(real lhs) returns maybe_bool
+
+public function maybe_real.flat_map(MaybeRealFlatMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.flat_map(this.val) : maybe_bool(false, false)
+    destroy cl
+    return ret
+
+public interface MaybeRealMapString
+    function map(real lhs) returns string
+
+public function maybe_real.map(MaybeRealMapString cl) returns maybe_string
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_string(this._has, ret)
+
+public interface MaybeRealFlatMapString
+    function flat_map(real lhs) returns maybe_string
+
+public function maybe_real.flat_map(MaybeRealFlatMapString cl) returns maybe_string
+    let ret = this._has ? cl.flat_map(this.val) : maybe_string(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeRealMapUnit
+    function map(real lhs) returns unit
+
+public function maybe_real.map(MaybeRealMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_unit(this._has, ret)
+
+public interface MaybeRealFlatMapUnit
+    function flat_map(real lhs) returns maybe_unit
+
+public function maybe_real.flat_map(MaybeRealFlatMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.flat_map(this.val) : maybe_unit(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeRealMapPlayer
+    function map(real lhs) returns player
+
+public function maybe_real.map(MaybeRealMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_player(this._has, ret)
+
+public interface MaybeRealFlatMapPlayer
+    function flat_map(real lhs) returns maybe_player
+
+public function maybe_real.flat_map(MaybeRealFlatMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.flat_map(this.val) : maybe_player(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeRealMapVec2
+    function map(real lhs) returns vec2
+
+public function maybe_real.map(MaybeRealMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.map(this.val) : ZERO2
+    destroy cl
+    return maybe_vec2(this._has, ret)
+
+public interface MaybeRealFlatMapVec2
+    function flat_map(real lhs) returns maybe_vec2
+
+public function maybe_real.flat_map(MaybeRealFlatMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec2(false, ZERO2)
+    destroy cl
+    return ret
+
+public interface MaybeRealMapVec3
+    function map(real lhs) returns vec3
+
+public function maybe_real.map(MaybeRealMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.map(this.val) : ZERO3
+    destroy cl
+    return maybe_vec3(this._has, ret)
+
+public interface MaybeRealFlatMapVec3
+    function flat_map(real lhs) returns maybe_vec3
+
+public function maybe_real.flat_map(MaybeRealFlatMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec3(false, ZERO3)
+    destroy cl
+    return ret
+
+public interface MaybeRealMapAngle
+    function map(real lhs) returns angle
+
+public function maybe_real.map(MaybeRealMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.map(this.val) : angle(0.)
+    destroy cl
+    return maybe_angle(this._has, ret)
+
+public interface MaybeRealFlatMapAngle
+    function flat_map(real lhs) returns maybe_angle
+
+public function maybe_real.flat_map(MaybeRealFlatMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.flat_map(this.val) : maybe_angle(false, angle(0.))
+    destroy cl
+    return ret
+
+
+
+
+
 
 public function maybe_real(real val) returns maybe_real
     return maybe_real(true, val)
@@ -65,8 +366,6 @@ public function maybe_real(JustNull _zst) returns maybe_real
     return maybe_real(false, 0.)
 
 
-public interface MaybeBoolMap
-    function map(bool lhs) returns bool
 
 public tuple maybe_bool(bool _has, bool val)
 
@@ -75,16 +374,169 @@ public function maybe_bool.get_or(bool default_val) returns bool
         return this.val
     return default_val
 
+public interface BoolSupplier
+    function get() returns bool
+
+public function maybe_bool.get_or_else(BoolSupplier cl) returns bool
+    let ret = this._has ? this.val : cl.get()
+    destroy cl
+    return ret
+
 public function maybe_bool.has() returns bool
     return this._has
 
 public function maybe_bool.unwrap() returns bool
     return this.val
 
-public function maybe_bool.map(MaybeBoolMap cl) returns maybe_bool
-    let ret = this._has ? cl.map(this.val) : this.val
+
+public interface MaybeBoolMapInt
+    function map(bool lhs) returns int
+
+public function maybe_bool.map(MaybeBoolMapInt cl) returns maybe_int
+    let ret = this._has ? cl.map(this.val) : 0
+    destroy cl
+    return maybe_int(this._has, ret)
+
+public interface MaybeBoolFlatMapInt
+    function flat_map(bool lhs) returns maybe_int
+
+public function maybe_bool.flat_map(MaybeBoolFlatMapInt cl) returns maybe_int
+    let ret = this._has ? cl.flat_map(this.val) : maybe_int(false, 0)
+    destroy cl
+    return ret
+
+public interface MaybeBoolMapReal
+    function map(bool lhs) returns real
+
+public function maybe_bool.map(MaybeBoolMapReal cl) returns maybe_real
+    let ret = this._has ? cl.map(this.val) : 0.
+    destroy cl
+    return maybe_real(this._has, ret)
+
+public interface MaybeBoolFlatMapReal
+    function flat_map(bool lhs) returns maybe_real
+
+public function maybe_bool.flat_map(MaybeBoolFlatMapReal cl) returns maybe_real
+    let ret = this._has ? cl.flat_map(this.val) : maybe_real(false, 0.)
+    destroy cl
+    return ret
+
+public interface MaybeBoolMapBool
+    function map(bool lhs) returns bool
+
+public function maybe_bool.map(MaybeBoolMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.map(this.val) : false
     destroy cl
     return maybe_bool(this._has, ret)
+
+public interface MaybeBoolFlatMapBool
+    function flat_map(bool lhs) returns maybe_bool
+
+public function maybe_bool.flat_map(MaybeBoolFlatMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.flat_map(this.val) : maybe_bool(false, false)
+    destroy cl
+    return ret
+
+public interface MaybeBoolMapString
+    function map(bool lhs) returns string
+
+public function maybe_bool.map(MaybeBoolMapString cl) returns maybe_string
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_string(this._has, ret)
+
+public interface MaybeBoolFlatMapString
+    function flat_map(bool lhs) returns maybe_string
+
+public function maybe_bool.flat_map(MaybeBoolFlatMapString cl) returns maybe_string
+    let ret = this._has ? cl.flat_map(this.val) : maybe_string(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeBoolMapUnit
+    function map(bool lhs) returns unit
+
+public function maybe_bool.map(MaybeBoolMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_unit(this._has, ret)
+
+public interface MaybeBoolFlatMapUnit
+    function flat_map(bool lhs) returns maybe_unit
+
+public function maybe_bool.flat_map(MaybeBoolFlatMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.flat_map(this.val) : maybe_unit(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeBoolMapPlayer
+    function map(bool lhs) returns player
+
+public function maybe_bool.map(MaybeBoolMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_player(this._has, ret)
+
+public interface MaybeBoolFlatMapPlayer
+    function flat_map(bool lhs) returns maybe_player
+
+public function maybe_bool.flat_map(MaybeBoolFlatMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.flat_map(this.val) : maybe_player(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeBoolMapVec2
+    function map(bool lhs) returns vec2
+
+public function maybe_bool.map(MaybeBoolMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.map(this.val) : ZERO2
+    destroy cl
+    return maybe_vec2(this._has, ret)
+
+public interface MaybeBoolFlatMapVec2
+    function flat_map(bool lhs) returns maybe_vec2
+
+public function maybe_bool.flat_map(MaybeBoolFlatMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec2(false, ZERO2)
+    destroy cl
+    return ret
+
+public interface MaybeBoolMapVec3
+    function map(bool lhs) returns vec3
+
+public function maybe_bool.map(MaybeBoolMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.map(this.val) : ZERO3
+    destroy cl
+    return maybe_vec3(this._has, ret)
+
+public interface MaybeBoolFlatMapVec3
+    function flat_map(bool lhs) returns maybe_vec3
+
+public function maybe_bool.flat_map(MaybeBoolFlatMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec3(false, ZERO3)
+    destroy cl
+    return ret
+
+public interface MaybeBoolMapAngle
+    function map(bool lhs) returns angle
+
+public function maybe_bool.map(MaybeBoolMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.map(this.val) : angle(0.)
+    destroy cl
+    return maybe_angle(this._has, ret)
+
+public interface MaybeBoolFlatMapAngle
+    function flat_map(bool lhs) returns maybe_angle
+
+public function maybe_bool.flat_map(MaybeBoolFlatMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.flat_map(this.val) : maybe_angle(false, angle(0.))
+    destroy cl
+    return ret
+
+
+
+
+
 
 public function maybe_bool(bool val) returns maybe_bool
     return maybe_bool(true, val)
@@ -93,8 +545,6 @@ public function maybe_bool(JustNull _zst) returns maybe_bool
     return maybe_bool(false, false)
 
 
-public interface MaybeStringMap
-    function map(string lhs) returns string
 
 public tuple maybe_string(bool _has, string val)
 
@@ -103,26 +553,171 @@ public function maybe_string.get_or(string default_val) returns string
         return this.val
     return default_val
 
+public interface StringSupplier
+    function get() returns string
+
+public function maybe_string.get_or_else(StringSupplier cl) returns string
+    let ret = this._has ? this.val : cl.get()
+    destroy cl
+    return ret
+
 public function maybe_string.has() returns bool
     return this._has
 
 public function maybe_string.unwrap() returns string
     return this.val
 
-public function maybe_string.map(MaybeStringMap cl) returns maybe_string
-    let ret = this._has ? cl.map(this.val) : this.val
+
+public interface MaybeStringMapInt
+    function map(string lhs) returns int
+
+public function maybe_string.map(MaybeStringMapInt cl) returns maybe_int
+    let ret = this._has ? cl.map(this.val) : 0
+    destroy cl
+    return maybe_int(this._has, ret)
+
+public interface MaybeStringFlatMapInt
+    function flat_map(string lhs) returns maybe_int
+
+public function maybe_string.flat_map(MaybeStringFlatMapInt cl) returns maybe_int
+    let ret = this._has ? cl.flat_map(this.val) : maybe_int(false, 0)
+    destroy cl
+    return ret
+
+public interface MaybeStringMapReal
+    function map(string lhs) returns real
+
+public function maybe_string.map(MaybeStringMapReal cl) returns maybe_real
+    let ret = this._has ? cl.map(this.val) : 0.
+    destroy cl
+    return maybe_real(this._has, ret)
+
+public interface MaybeStringFlatMapReal
+    function flat_map(string lhs) returns maybe_real
+
+public function maybe_string.flat_map(MaybeStringFlatMapReal cl) returns maybe_real
+    let ret = this._has ? cl.flat_map(this.val) : maybe_real(false, 0.)
+    destroy cl
+    return ret
+
+public interface MaybeStringMapBool
+    function map(string lhs) returns bool
+
+public function maybe_string.map(MaybeStringMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.map(this.val) : false
+    destroy cl
+    return maybe_bool(this._has, ret)
+
+public interface MaybeStringFlatMapBool
+    function flat_map(string lhs) returns maybe_bool
+
+public function maybe_string.flat_map(MaybeStringFlatMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.flat_map(this.val) : maybe_bool(false, false)
+    destroy cl
+    return ret
+
+public interface MaybeStringMapString
+    function map(string lhs) returns string
+
+public function maybe_string.map(MaybeStringMapString cl) returns maybe_string
+    let ret = this._has ? cl.map(this.val) : null
     destroy cl
     return maybe_string(this._has, ret)
 
+public interface MaybeStringFlatMapString
+    function flat_map(string lhs) returns maybe_string
+
+public function maybe_string.flat_map(MaybeStringFlatMapString cl) returns maybe_string
+    let ret = this._has ? cl.flat_map(this.val) : maybe_string(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeStringMapUnit
+    function map(string lhs) returns unit
+
+public function maybe_string.map(MaybeStringMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_unit(this._has, ret)
+
+public interface MaybeStringFlatMapUnit
+    function flat_map(string lhs) returns maybe_unit
+
+public function maybe_string.flat_map(MaybeStringFlatMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.flat_map(this.val) : maybe_unit(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeStringMapPlayer
+    function map(string lhs) returns player
+
+public function maybe_string.map(MaybeStringMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_player(this._has, ret)
+
+public interface MaybeStringFlatMapPlayer
+    function flat_map(string lhs) returns maybe_player
+
+public function maybe_string.flat_map(MaybeStringFlatMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.flat_map(this.val) : maybe_player(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeStringMapVec2
+    function map(string lhs) returns vec2
+
+public function maybe_string.map(MaybeStringMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.map(this.val) : ZERO2
+    destroy cl
+    return maybe_vec2(this._has, ret)
+
+public interface MaybeStringFlatMapVec2
+    function flat_map(string lhs) returns maybe_vec2
+
+public function maybe_string.flat_map(MaybeStringFlatMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec2(false, ZERO2)
+    destroy cl
+    return ret
+
+public interface MaybeStringMapVec3
+    function map(string lhs) returns vec3
+
+public function maybe_string.map(MaybeStringMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.map(this.val) : ZERO3
+    destroy cl
+    return maybe_vec3(this._has, ret)
+
+public interface MaybeStringFlatMapVec3
+    function flat_map(string lhs) returns maybe_vec3
+
+public function maybe_string.flat_map(MaybeStringFlatMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec3(false, ZERO3)
+    destroy cl
+    return ret
+
+public interface MaybeStringMapAngle
+    function map(string lhs) returns angle
+
+public function maybe_string.map(MaybeStringMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.map(this.val) : angle(0.)
+    destroy cl
+    return maybe_angle(this._has, ret)
+
+public interface MaybeStringFlatMapAngle
+    function flat_map(string lhs) returns maybe_angle
+
+public function maybe_string.flat_map(MaybeStringFlatMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.flat_map(this.val) : maybe_angle(false, angle(0.))
+    destroy cl
+    return ret
+
+
+
 public function maybe_string(string val) returns maybe_string
-    return maybe_string(true, val)
-
-public function maybe_string(JustNull _zst) returns maybe_string
-    return maybe_string(false, "")
+    return maybe_string(val == null ? false : true, val)
 
 
-public interface MaybeUnitMap
-    function map(unit lhs) returns unit
 
 public tuple maybe_unit(bool _has, unit val)
 
@@ -131,26 +726,171 @@ public function maybe_unit.get_or(unit default_val) returns unit
         return this.val
     return default_val
 
+public interface UnitSupplier
+    function get() returns unit
+
+public function maybe_unit.get_or_else(UnitSupplier cl) returns unit
+    let ret = this._has ? this.val : cl.get()
+    destroy cl
+    return ret
+
 public function maybe_unit.has() returns bool
     return this._has
 
 public function maybe_unit.unwrap() returns unit
     return this.val
 
-public function maybe_unit.map(MaybeUnitMap cl) returns maybe_unit
-    let ret = this._has ? cl.map(this.val) : this.val
+
+public interface MaybeUnitMapInt
+    function map(unit lhs) returns int
+
+public function maybe_unit.map(MaybeUnitMapInt cl) returns maybe_int
+    let ret = this._has ? cl.map(this.val) : 0
+    destroy cl
+    return maybe_int(this._has, ret)
+
+public interface MaybeUnitFlatMapInt
+    function flat_map(unit lhs) returns maybe_int
+
+public function maybe_unit.flat_map(MaybeUnitFlatMapInt cl) returns maybe_int
+    let ret = this._has ? cl.flat_map(this.val) : maybe_int(false, 0)
+    destroy cl
+    return ret
+
+public interface MaybeUnitMapReal
+    function map(unit lhs) returns real
+
+public function maybe_unit.map(MaybeUnitMapReal cl) returns maybe_real
+    let ret = this._has ? cl.map(this.val) : 0.
+    destroy cl
+    return maybe_real(this._has, ret)
+
+public interface MaybeUnitFlatMapReal
+    function flat_map(unit lhs) returns maybe_real
+
+public function maybe_unit.flat_map(MaybeUnitFlatMapReal cl) returns maybe_real
+    let ret = this._has ? cl.flat_map(this.val) : maybe_real(false, 0.)
+    destroy cl
+    return ret
+
+public interface MaybeUnitMapBool
+    function map(unit lhs) returns bool
+
+public function maybe_unit.map(MaybeUnitMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.map(this.val) : false
+    destroy cl
+    return maybe_bool(this._has, ret)
+
+public interface MaybeUnitFlatMapBool
+    function flat_map(unit lhs) returns maybe_bool
+
+public function maybe_unit.flat_map(MaybeUnitFlatMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.flat_map(this.val) : maybe_bool(false, false)
+    destroy cl
+    return ret
+
+public interface MaybeUnitMapString
+    function map(unit lhs) returns string
+
+public function maybe_unit.map(MaybeUnitMapString cl) returns maybe_string
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_string(this._has, ret)
+
+public interface MaybeUnitFlatMapString
+    function flat_map(unit lhs) returns maybe_string
+
+public function maybe_unit.flat_map(MaybeUnitFlatMapString cl) returns maybe_string
+    let ret = this._has ? cl.flat_map(this.val) : maybe_string(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeUnitMapUnit
+    function map(unit lhs) returns unit
+
+public function maybe_unit.map(MaybeUnitMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.map(this.val) : null
     destroy cl
     return maybe_unit(this._has, ret)
 
+public interface MaybeUnitFlatMapUnit
+    function flat_map(unit lhs) returns maybe_unit
+
+public function maybe_unit.flat_map(MaybeUnitFlatMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.flat_map(this.val) : maybe_unit(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeUnitMapPlayer
+    function map(unit lhs) returns player
+
+public function maybe_unit.map(MaybeUnitMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_player(this._has, ret)
+
+public interface MaybeUnitFlatMapPlayer
+    function flat_map(unit lhs) returns maybe_player
+
+public function maybe_unit.flat_map(MaybeUnitFlatMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.flat_map(this.val) : maybe_player(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeUnitMapVec2
+    function map(unit lhs) returns vec2
+
+public function maybe_unit.map(MaybeUnitMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.map(this.val) : ZERO2
+    destroy cl
+    return maybe_vec2(this._has, ret)
+
+public interface MaybeUnitFlatMapVec2
+    function flat_map(unit lhs) returns maybe_vec2
+
+public function maybe_unit.flat_map(MaybeUnitFlatMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec2(false, ZERO2)
+    destroy cl
+    return ret
+
+public interface MaybeUnitMapVec3
+    function map(unit lhs) returns vec3
+
+public function maybe_unit.map(MaybeUnitMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.map(this.val) : ZERO3
+    destroy cl
+    return maybe_vec3(this._has, ret)
+
+public interface MaybeUnitFlatMapVec3
+    function flat_map(unit lhs) returns maybe_vec3
+
+public function maybe_unit.flat_map(MaybeUnitFlatMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec3(false, ZERO3)
+    destroy cl
+    return ret
+
+public interface MaybeUnitMapAngle
+    function map(unit lhs) returns angle
+
+public function maybe_unit.map(MaybeUnitMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.map(this.val) : angle(0.)
+    destroy cl
+    return maybe_angle(this._has, ret)
+
+public interface MaybeUnitFlatMapAngle
+    function flat_map(unit lhs) returns maybe_angle
+
+public function maybe_unit.flat_map(MaybeUnitFlatMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.flat_map(this.val) : maybe_angle(false, angle(0.))
+    destroy cl
+    return ret
+
+
+
 public function maybe_unit(unit val) returns maybe_unit
-    return maybe_unit(true, val)
-
-public function maybe_unit(JustNull _zst) returns maybe_unit
-    return maybe_unit(false, null)
+    return maybe_unit(val == null ? false : true, val)
 
 
-public interface MaybePlayerMap
-    function map(player lhs) returns player
 
 public tuple maybe_player(bool _has, player val)
 
@@ -159,26 +899,171 @@ public function maybe_player.get_or(player default_val) returns player
         return this.val
     return default_val
 
+public interface PlayerSupplier
+    function get() returns player
+
+public function maybe_player.get_or_else(PlayerSupplier cl) returns player
+    let ret = this._has ? this.val : cl.get()
+    destroy cl
+    return ret
+
 public function maybe_player.has() returns bool
     return this._has
 
 public function maybe_player.unwrap() returns player
     return this.val
 
-public function maybe_player.map(MaybePlayerMap cl) returns maybe_player
-    let ret = this._has ? cl.map(this.val) : this.val
+
+public interface MaybePlayerMapInt
+    function map(player lhs) returns int
+
+public function maybe_player.map(MaybePlayerMapInt cl) returns maybe_int
+    let ret = this._has ? cl.map(this.val) : 0
+    destroy cl
+    return maybe_int(this._has, ret)
+
+public interface MaybePlayerFlatMapInt
+    function flat_map(player lhs) returns maybe_int
+
+public function maybe_player.flat_map(MaybePlayerFlatMapInt cl) returns maybe_int
+    let ret = this._has ? cl.flat_map(this.val) : maybe_int(false, 0)
+    destroy cl
+    return ret
+
+public interface MaybePlayerMapReal
+    function map(player lhs) returns real
+
+public function maybe_player.map(MaybePlayerMapReal cl) returns maybe_real
+    let ret = this._has ? cl.map(this.val) : 0.
+    destroy cl
+    return maybe_real(this._has, ret)
+
+public interface MaybePlayerFlatMapReal
+    function flat_map(player lhs) returns maybe_real
+
+public function maybe_player.flat_map(MaybePlayerFlatMapReal cl) returns maybe_real
+    let ret = this._has ? cl.flat_map(this.val) : maybe_real(false, 0.)
+    destroy cl
+    return ret
+
+public interface MaybePlayerMapBool
+    function map(player lhs) returns bool
+
+public function maybe_player.map(MaybePlayerMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.map(this.val) : false
+    destroy cl
+    return maybe_bool(this._has, ret)
+
+public interface MaybePlayerFlatMapBool
+    function flat_map(player lhs) returns maybe_bool
+
+public function maybe_player.flat_map(MaybePlayerFlatMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.flat_map(this.val) : maybe_bool(false, false)
+    destroy cl
+    return ret
+
+public interface MaybePlayerMapString
+    function map(player lhs) returns string
+
+public function maybe_player.map(MaybePlayerMapString cl) returns maybe_string
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_string(this._has, ret)
+
+public interface MaybePlayerFlatMapString
+    function flat_map(player lhs) returns maybe_string
+
+public function maybe_player.flat_map(MaybePlayerFlatMapString cl) returns maybe_string
+    let ret = this._has ? cl.flat_map(this.val) : maybe_string(false, null)
+    destroy cl
+    return ret
+
+public interface MaybePlayerMapUnit
+    function map(player lhs) returns unit
+
+public function maybe_player.map(MaybePlayerMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_unit(this._has, ret)
+
+public interface MaybePlayerFlatMapUnit
+    function flat_map(player lhs) returns maybe_unit
+
+public function maybe_player.flat_map(MaybePlayerFlatMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.flat_map(this.val) : maybe_unit(false, null)
+    destroy cl
+    return ret
+
+public interface MaybePlayerMapPlayer
+    function map(player lhs) returns player
+
+public function maybe_player.map(MaybePlayerMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.map(this.val) : null
     destroy cl
     return maybe_player(this._has, ret)
 
+public interface MaybePlayerFlatMapPlayer
+    function flat_map(player lhs) returns maybe_player
+
+public function maybe_player.flat_map(MaybePlayerFlatMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.flat_map(this.val) : maybe_player(false, null)
+    destroy cl
+    return ret
+
+public interface MaybePlayerMapVec2
+    function map(player lhs) returns vec2
+
+public function maybe_player.map(MaybePlayerMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.map(this.val) : ZERO2
+    destroy cl
+    return maybe_vec2(this._has, ret)
+
+public interface MaybePlayerFlatMapVec2
+    function flat_map(player lhs) returns maybe_vec2
+
+public function maybe_player.flat_map(MaybePlayerFlatMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec2(false, ZERO2)
+    destroy cl
+    return ret
+
+public interface MaybePlayerMapVec3
+    function map(player lhs) returns vec3
+
+public function maybe_player.map(MaybePlayerMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.map(this.val) : ZERO3
+    destroy cl
+    return maybe_vec3(this._has, ret)
+
+public interface MaybePlayerFlatMapVec3
+    function flat_map(player lhs) returns maybe_vec3
+
+public function maybe_player.flat_map(MaybePlayerFlatMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec3(false, ZERO3)
+    destroy cl
+    return ret
+
+public interface MaybePlayerMapAngle
+    function map(player lhs) returns angle
+
+public function maybe_player.map(MaybePlayerMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.map(this.val) : angle(0.)
+    destroy cl
+    return maybe_angle(this._has, ret)
+
+public interface MaybePlayerFlatMapAngle
+    function flat_map(player lhs) returns maybe_angle
+
+public function maybe_player.flat_map(MaybePlayerFlatMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.flat_map(this.val) : maybe_angle(false, angle(0.))
+    destroy cl
+    return ret
+
+
+
 public function maybe_player(player val) returns maybe_player
-    return maybe_player(true, val)
-
-public function maybe_player(JustNull _zst) returns maybe_player
-    return maybe_player(false, null)
+    return maybe_player(val == null ? false : true, val)
 
 
-public interface MaybeVec2Map
-    function map(vec2 lhs) returns vec2
 
 public tuple maybe_vec2(bool _has, vec2 val)
 
@@ -187,16 +1072,169 @@ public function maybe_vec2.get_or(vec2 default_val) returns vec2
         return this.val
     return default_val
 
+public interface Vec2Supplier
+    function get() returns vec2
+
+public function maybe_vec2.get_or_else(Vec2Supplier cl) returns vec2
+    let ret = this._has ? this.val : cl.get()
+    destroy cl
+    return ret
+
 public function maybe_vec2.has() returns bool
     return this._has
 
 public function maybe_vec2.unwrap() returns vec2
     return this.val
 
-public function maybe_vec2.map(MaybeVec2Map cl) returns maybe_vec2
-    let ret = this._has ? cl.map(this.val) : this.val
+
+public interface MaybeVec2MapInt
+    function map(vec2 lhs) returns int
+
+public function maybe_vec2.map(MaybeVec2MapInt cl) returns maybe_int
+    let ret = this._has ? cl.map(this.val) : 0
+    destroy cl
+    return maybe_int(this._has, ret)
+
+public interface MaybeVec2FlatMapInt
+    function flat_map(vec2 lhs) returns maybe_int
+
+public function maybe_vec2.flat_map(MaybeVec2FlatMapInt cl) returns maybe_int
+    let ret = this._has ? cl.flat_map(this.val) : maybe_int(false, 0)
+    destroy cl
+    return ret
+
+public interface MaybeVec2MapReal
+    function map(vec2 lhs) returns real
+
+public function maybe_vec2.map(MaybeVec2MapReal cl) returns maybe_real
+    let ret = this._has ? cl.map(this.val) : 0.
+    destroy cl
+    return maybe_real(this._has, ret)
+
+public interface MaybeVec2FlatMapReal
+    function flat_map(vec2 lhs) returns maybe_real
+
+public function maybe_vec2.flat_map(MaybeVec2FlatMapReal cl) returns maybe_real
+    let ret = this._has ? cl.flat_map(this.val) : maybe_real(false, 0.)
+    destroy cl
+    return ret
+
+public interface MaybeVec2MapBool
+    function map(vec2 lhs) returns bool
+
+public function maybe_vec2.map(MaybeVec2MapBool cl) returns maybe_bool
+    let ret = this._has ? cl.map(this.val) : false
+    destroy cl
+    return maybe_bool(this._has, ret)
+
+public interface MaybeVec2FlatMapBool
+    function flat_map(vec2 lhs) returns maybe_bool
+
+public function maybe_vec2.flat_map(MaybeVec2FlatMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.flat_map(this.val) : maybe_bool(false, false)
+    destroy cl
+    return ret
+
+public interface MaybeVec2MapString
+    function map(vec2 lhs) returns string
+
+public function maybe_vec2.map(MaybeVec2MapString cl) returns maybe_string
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_string(this._has, ret)
+
+public interface MaybeVec2FlatMapString
+    function flat_map(vec2 lhs) returns maybe_string
+
+public function maybe_vec2.flat_map(MaybeVec2FlatMapString cl) returns maybe_string
+    let ret = this._has ? cl.flat_map(this.val) : maybe_string(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeVec2MapUnit
+    function map(vec2 lhs) returns unit
+
+public function maybe_vec2.map(MaybeVec2MapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_unit(this._has, ret)
+
+public interface MaybeVec2FlatMapUnit
+    function flat_map(vec2 lhs) returns maybe_unit
+
+public function maybe_vec2.flat_map(MaybeVec2FlatMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.flat_map(this.val) : maybe_unit(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeVec2MapPlayer
+    function map(vec2 lhs) returns player
+
+public function maybe_vec2.map(MaybeVec2MapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_player(this._has, ret)
+
+public interface MaybeVec2FlatMapPlayer
+    function flat_map(vec2 lhs) returns maybe_player
+
+public function maybe_vec2.flat_map(MaybeVec2FlatMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.flat_map(this.val) : maybe_player(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeVec2MapVec2
+    function map(vec2 lhs) returns vec2
+
+public function maybe_vec2.map(MaybeVec2MapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.map(this.val) : ZERO2
     destroy cl
     return maybe_vec2(this._has, ret)
+
+public interface MaybeVec2FlatMapVec2
+    function flat_map(vec2 lhs) returns maybe_vec2
+
+public function maybe_vec2.flat_map(MaybeVec2FlatMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec2(false, ZERO2)
+    destroy cl
+    return ret
+
+public interface MaybeVec2MapVec3
+    function map(vec2 lhs) returns vec3
+
+public function maybe_vec2.map(MaybeVec2MapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.map(this.val) : ZERO3
+    destroy cl
+    return maybe_vec3(this._has, ret)
+
+public interface MaybeVec2FlatMapVec3
+    function flat_map(vec2 lhs) returns maybe_vec3
+
+public function maybe_vec2.flat_map(MaybeVec2FlatMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec3(false, ZERO3)
+    destroy cl
+    return ret
+
+public interface MaybeVec2MapAngle
+    function map(vec2 lhs) returns angle
+
+public function maybe_vec2.map(MaybeVec2MapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.map(this.val) : angle(0.)
+    destroy cl
+    return maybe_angle(this._has, ret)
+
+public interface MaybeVec2FlatMapAngle
+    function flat_map(vec2 lhs) returns maybe_angle
+
+public function maybe_vec2.flat_map(MaybeVec2FlatMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.flat_map(this.val) : maybe_angle(false, angle(0.))
+    destroy cl
+    return ret
+
+
+
+
+
 
 public function maybe_vec2(vec2 val) returns maybe_vec2
     return maybe_vec2(true, val)
@@ -205,8 +1243,6 @@ public function maybe_vec2(JustNull _zst) returns maybe_vec2
     return maybe_vec2(false, ZERO2)
 
 
-public interface MaybeVec3Map
-    function map(vec3 lhs) returns vec3
 
 public tuple maybe_vec3(bool _has, vec3 val)
 
@@ -215,16 +1251,169 @@ public function maybe_vec3.get_or(vec3 default_val) returns vec3
         return this.val
     return default_val
 
+public interface Vec3Supplier
+    function get() returns vec3
+
+public function maybe_vec3.get_or_else(Vec3Supplier cl) returns vec3
+    let ret = this._has ? this.val : cl.get()
+    destroy cl
+    return ret
+
 public function maybe_vec3.has() returns bool
     return this._has
 
 public function maybe_vec3.unwrap() returns vec3
     return this.val
 
-public function maybe_vec3.map(MaybeVec3Map cl) returns maybe_vec3
-    let ret = this._has ? cl.map(this.val) : this.val
+
+public interface MaybeVec3MapInt
+    function map(vec3 lhs) returns int
+
+public function maybe_vec3.map(MaybeVec3MapInt cl) returns maybe_int
+    let ret = this._has ? cl.map(this.val) : 0
+    destroy cl
+    return maybe_int(this._has, ret)
+
+public interface MaybeVec3FlatMapInt
+    function flat_map(vec3 lhs) returns maybe_int
+
+public function maybe_vec3.flat_map(MaybeVec3FlatMapInt cl) returns maybe_int
+    let ret = this._has ? cl.flat_map(this.val) : maybe_int(false, 0)
+    destroy cl
+    return ret
+
+public interface MaybeVec3MapReal
+    function map(vec3 lhs) returns real
+
+public function maybe_vec3.map(MaybeVec3MapReal cl) returns maybe_real
+    let ret = this._has ? cl.map(this.val) : 0.
+    destroy cl
+    return maybe_real(this._has, ret)
+
+public interface MaybeVec3FlatMapReal
+    function flat_map(vec3 lhs) returns maybe_real
+
+public function maybe_vec3.flat_map(MaybeVec3FlatMapReal cl) returns maybe_real
+    let ret = this._has ? cl.flat_map(this.val) : maybe_real(false, 0.)
+    destroy cl
+    return ret
+
+public interface MaybeVec3MapBool
+    function map(vec3 lhs) returns bool
+
+public function maybe_vec3.map(MaybeVec3MapBool cl) returns maybe_bool
+    let ret = this._has ? cl.map(this.val) : false
+    destroy cl
+    return maybe_bool(this._has, ret)
+
+public interface MaybeVec3FlatMapBool
+    function flat_map(vec3 lhs) returns maybe_bool
+
+public function maybe_vec3.flat_map(MaybeVec3FlatMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.flat_map(this.val) : maybe_bool(false, false)
+    destroy cl
+    return ret
+
+public interface MaybeVec3MapString
+    function map(vec3 lhs) returns string
+
+public function maybe_vec3.map(MaybeVec3MapString cl) returns maybe_string
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_string(this._has, ret)
+
+public interface MaybeVec3FlatMapString
+    function flat_map(vec3 lhs) returns maybe_string
+
+public function maybe_vec3.flat_map(MaybeVec3FlatMapString cl) returns maybe_string
+    let ret = this._has ? cl.flat_map(this.val) : maybe_string(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeVec3MapUnit
+    function map(vec3 lhs) returns unit
+
+public function maybe_vec3.map(MaybeVec3MapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_unit(this._has, ret)
+
+public interface MaybeVec3FlatMapUnit
+    function flat_map(vec3 lhs) returns maybe_unit
+
+public function maybe_vec3.flat_map(MaybeVec3FlatMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.flat_map(this.val) : maybe_unit(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeVec3MapPlayer
+    function map(vec3 lhs) returns player
+
+public function maybe_vec3.map(MaybeVec3MapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_player(this._has, ret)
+
+public interface MaybeVec3FlatMapPlayer
+    function flat_map(vec3 lhs) returns maybe_player
+
+public function maybe_vec3.flat_map(MaybeVec3FlatMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.flat_map(this.val) : maybe_player(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeVec3MapVec2
+    function map(vec3 lhs) returns vec2
+
+public function maybe_vec3.map(MaybeVec3MapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.map(this.val) : ZERO2
+    destroy cl
+    return maybe_vec2(this._has, ret)
+
+public interface MaybeVec3FlatMapVec2
+    function flat_map(vec3 lhs) returns maybe_vec2
+
+public function maybe_vec3.flat_map(MaybeVec3FlatMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec2(false, ZERO2)
+    destroy cl
+    return ret
+
+public interface MaybeVec3MapVec3
+    function map(vec3 lhs) returns vec3
+
+public function maybe_vec3.map(MaybeVec3MapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.map(this.val) : ZERO3
     destroy cl
     return maybe_vec3(this._has, ret)
+
+public interface MaybeVec3FlatMapVec3
+    function flat_map(vec3 lhs) returns maybe_vec3
+
+public function maybe_vec3.flat_map(MaybeVec3FlatMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec3(false, ZERO3)
+    destroy cl
+    return ret
+
+public interface MaybeVec3MapAngle
+    function map(vec3 lhs) returns angle
+
+public function maybe_vec3.map(MaybeVec3MapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.map(this.val) : angle(0.)
+    destroy cl
+    return maybe_angle(this._has, ret)
+
+public interface MaybeVec3FlatMapAngle
+    function flat_map(vec3 lhs) returns maybe_angle
+
+public function maybe_vec3.flat_map(MaybeVec3FlatMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.flat_map(this.val) : maybe_angle(false, angle(0.))
+    destroy cl
+    return ret
+
+
+
+
+
 
 public function maybe_vec3(vec3 val) returns maybe_vec3
     return maybe_vec3(true, val)
@@ -233,8 +1422,6 @@ public function maybe_vec3(JustNull _zst) returns maybe_vec3
     return maybe_vec3(false, ZERO3)
 
 
-public interface MaybeAngleMap
-    function map(angle lhs) returns angle
 
 public tuple maybe_angle(bool _has, angle val)
 
@@ -243,20 +1430,174 @@ public function maybe_angle.get_or(angle default_val) returns angle
         return this.val
     return default_val
 
+public interface AngleSupplier
+    function get() returns angle
+
+public function maybe_angle.get_or_else(AngleSupplier cl) returns angle
+    let ret = this._has ? this.val : cl.get()
+    destroy cl
+    return ret
+
 public function maybe_angle.has() returns bool
     return this._has
 
 public function maybe_angle.unwrap() returns angle
     return this.val
 
-public function maybe_angle.map(MaybeAngleMap cl) returns maybe_angle
-    let ret = this._has ? cl.map(this.val) : this.val
+
+public interface MaybeAngleMapInt
+    function map(angle lhs) returns int
+
+public function maybe_angle.map(MaybeAngleMapInt cl) returns maybe_int
+    let ret = this._has ? cl.map(this.val) : 0
+    destroy cl
+    return maybe_int(this._has, ret)
+
+public interface MaybeAngleFlatMapInt
+    function flat_map(angle lhs) returns maybe_int
+
+public function maybe_angle.flat_map(MaybeAngleFlatMapInt cl) returns maybe_int
+    let ret = this._has ? cl.flat_map(this.val) : maybe_int(false, 0)
+    destroy cl
+    return ret
+
+public interface MaybeAngleMapReal
+    function map(angle lhs) returns real
+
+public function maybe_angle.map(MaybeAngleMapReal cl) returns maybe_real
+    let ret = this._has ? cl.map(this.val) : 0.
+    destroy cl
+    return maybe_real(this._has, ret)
+
+public interface MaybeAngleFlatMapReal
+    function flat_map(angle lhs) returns maybe_real
+
+public function maybe_angle.flat_map(MaybeAngleFlatMapReal cl) returns maybe_real
+    let ret = this._has ? cl.flat_map(this.val) : maybe_real(false, 0.)
+    destroy cl
+    return ret
+
+public interface MaybeAngleMapBool
+    function map(angle lhs) returns bool
+
+public function maybe_angle.map(MaybeAngleMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.map(this.val) : false
+    destroy cl
+    return maybe_bool(this._has, ret)
+
+public interface MaybeAngleFlatMapBool
+    function flat_map(angle lhs) returns maybe_bool
+
+public function maybe_angle.flat_map(MaybeAngleFlatMapBool cl) returns maybe_bool
+    let ret = this._has ? cl.flat_map(this.val) : maybe_bool(false, false)
+    destroy cl
+    return ret
+
+public interface MaybeAngleMapString
+    function map(angle lhs) returns string
+
+public function maybe_angle.map(MaybeAngleMapString cl) returns maybe_string
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_string(this._has, ret)
+
+public interface MaybeAngleFlatMapString
+    function flat_map(angle lhs) returns maybe_string
+
+public function maybe_angle.flat_map(MaybeAngleFlatMapString cl) returns maybe_string
+    let ret = this._has ? cl.flat_map(this.val) : maybe_string(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeAngleMapUnit
+    function map(angle lhs) returns unit
+
+public function maybe_angle.map(MaybeAngleMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_unit(this._has, ret)
+
+public interface MaybeAngleFlatMapUnit
+    function flat_map(angle lhs) returns maybe_unit
+
+public function maybe_angle.flat_map(MaybeAngleFlatMapUnit cl) returns maybe_unit
+    let ret = this._has ? cl.flat_map(this.val) : maybe_unit(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeAngleMapPlayer
+    function map(angle lhs) returns player
+
+public function maybe_angle.map(MaybeAngleMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.map(this.val) : null
+    destroy cl
+    return maybe_player(this._has, ret)
+
+public interface MaybeAngleFlatMapPlayer
+    function flat_map(angle lhs) returns maybe_player
+
+public function maybe_angle.flat_map(MaybeAngleFlatMapPlayer cl) returns maybe_player
+    let ret = this._has ? cl.flat_map(this.val) : maybe_player(false, null)
+    destroy cl
+    return ret
+
+public interface MaybeAngleMapVec2
+    function map(angle lhs) returns vec2
+
+public function maybe_angle.map(MaybeAngleMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.map(this.val) : ZERO2
+    destroy cl
+    return maybe_vec2(this._has, ret)
+
+public interface MaybeAngleFlatMapVec2
+    function flat_map(angle lhs) returns maybe_vec2
+
+public function maybe_angle.flat_map(MaybeAngleFlatMapVec2 cl) returns maybe_vec2
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec2(false, ZERO2)
+    destroy cl
+    return ret
+
+public interface MaybeAngleMapVec3
+    function map(angle lhs) returns vec3
+
+public function maybe_angle.map(MaybeAngleMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.map(this.val) : ZERO3
+    destroy cl
+    return maybe_vec3(this._has, ret)
+
+public interface MaybeAngleFlatMapVec3
+    function flat_map(angle lhs) returns maybe_vec3
+
+public function maybe_angle.flat_map(MaybeAngleFlatMapVec3 cl) returns maybe_vec3
+    let ret = this._has ? cl.flat_map(this.val) : maybe_vec3(false, ZERO3)
+    destroy cl
+    return ret
+
+public interface MaybeAngleMapAngle
+    function map(angle lhs) returns angle
+
+public function maybe_angle.map(MaybeAngleMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.map(this.val) : angle(0.)
     destroy cl
     return maybe_angle(this._has, ret)
+
+public interface MaybeAngleFlatMapAngle
+    function flat_map(angle lhs) returns maybe_angle
+
+public function maybe_angle.flat_map(MaybeAngleFlatMapAngle cl) returns maybe_angle
+    let ret = this._has ? cl.flat_map(this.val) : maybe_angle(false, angle(0.))
+    destroy cl
+    return ret
+
+
+
+
+
 
 public function maybe_angle(angle val) returns maybe_angle
     return maybe_angle(true, val)
 
 public function maybe_angle(JustNull _zst) returns maybe_angle
     return maybe_angle(false, angle(0.))
+
 
